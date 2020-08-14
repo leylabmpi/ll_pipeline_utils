@@ -7,11 +7,30 @@ from distutils.spawn import find_executable
 
 #-- util functions --#
 def skipped(x):
+    """
+    Does string start with "skip"?
+    """
     return str(x).strip().lower().startswith('skip')
 
 def noSkip(x):
+    """
+    Opposite of skipped()
+    """
     return not skipped(x)
 
 def list_files(base_dir, pattern):
+    """
+    Recursively listing files
+    """
     path = pathlib.Path(base_dir)
     return [str(p) for p in path.glob(pattern)]
+
+def make_fasta_splits(n_jobs):
+    """
+    Creating fasta file names with zero-padded number for a file extension
+    """
+    if skipped(str(n_jobs)):
+        n_jobs = 1
+    zero_pad = len(str(n_jobs))
+    zero_pad = '{0:0' + str(zero_pad) + 'd}'
+    return [str(zero_pad.format(x+1)) for x in range(n_jobs)]
