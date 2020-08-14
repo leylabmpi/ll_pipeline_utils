@@ -55,3 +55,28 @@ def config_default(config, var1, var2=None, var3=None, default='LL-PIPELINE'):
         except KeyError:
             config[var1] = default
 
+def shared_mem():
+    """ 
+    gets amount of available space (Gb) in /dev/shm
+    """
+    p = subprocess.Popen(['df', '/dev/shm/'], stdout=subprocess.PIPE)
+    output, err = p.communicate()
+    rc = p.returncode
+    available = 0
+    for line in output.decode().split('\n'):        
+        line = re.split(' +', line)
+        if line[-1].startswith('/dev/shm'):
+            total = float(line[1])
+            used = float(line[2])
+            available = (total - used) / 1e6            
+    return available
+
+def which_tmp_dir():
+    """
+    Determining which temporary directory to use, depending on the amount of shared memory avaiable
+    """
+    if config['pipeline']['use_shared_mem'] is True and shared_mem() > 80:
+        tmp_dir = os.path.join('/dev/shm', os.path.split(config['tmp_dir'])[1])
+    else:
+        tmp_dir = config['tmp_dir']
+    return tmp_dir
