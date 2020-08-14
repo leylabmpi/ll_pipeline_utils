@@ -54,3 +54,33 @@ def config_default(config, var1, var2=None, var3=None, default='LL-PIPELINE'):
             _ = config[var1]
         except KeyError:
             config[var1] = default
+
+def gz_is_empty(fname):
+    """ Test if gzip file fname is empty. Return True if the
+    uncompressed data in fname has zero length or if fname
+    itself has zero length. Raises OSError if fname has non-zero
+    length and is not a gzip file
+    """
+    with gzip.open(fname, 'rb') as inF:
+        data = inF.read(1)
+    return len(data) == 0
+
+def spring_exe(wildcards):
+    """ Determine which compiled version of spring to use
+    """
+    base_dir = config['pipeline']['script_folder']
+    exe_versions = ['spring-U18.04.3', 'spring-U18.04.2']
+    working_exe = None
+    for exe in exe_versions:
+        F = os.path.join(base_dir, exe) + ' -h'
+        if find_executable(F) == '':
+            raise ValueError('Cannot find executable: {}'.format(F))
+        try:
+            res = subprocess.run(F, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            working_exe = F
+        except subprocess.CalledProcessError as e:
+            continue
+    if working_exe is None:
+        raise ValueError('No versions of "spring" are working on this kernel')
+    return working_exe    
+
