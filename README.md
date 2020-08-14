@@ -11,7 +11,7 @@ from the main (parent) repo.
 
 ```
 cd /path/to/PIPELINE/
-git submodule update --remote
+git submodule update --remote --init --recursive
 ```
 
 # How to add this submodule to an existing pipeline repository
