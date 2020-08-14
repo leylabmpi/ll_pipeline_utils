@@ -41,7 +41,7 @@ def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
 def mk_cmd(success=True):
     msg = 'complete' if success is True else 'error'
     print('Pipeline {}! Creating report...'.format(msg))
-    exe = os.path.join(config['pipeline']['script_folder'], 'll_pipeline_utils', 'bin', 'log_summarize.py')
+    exe = os.path.join(config['pipeline']['pipeline_folder'], 'bin', 'll_pipeline_utils', 'bin', 'log_summarize.py')
     if not os.path.isfile(exe):
         exe = os.path.join(config['pipeline']['script_folder'], 'log_summarize.py')            
     rpt_file = os.path.join(config['tmp_dir'], 'job_report.csv')
