@@ -1,0 +1,17 @@
+# import 
+from __future__ import print_function
+import os
+import sys
+import pathlib
+from distutils.spawn import find_executable
+
+#-- util functions --#
+def skipped(x):
+    return str(x).strip().lower().startswith('skip')
+
+def noSkip(x):
+    return not skipped(x)
+
+def list_files(base_dir, pattern):
+    path = pathlib.Path(base_dir)
+    return [str(p) for p in path.glob(pattern)]
