@@ -34,3 +34,23 @@ def make_fasta_splits(n_jobs):
     zero_pad = len(str(n_jobs))
     zero_pad = '{0:0' + str(zero_pad) + 'd}'
     return [str(zero_pad.format(x+1)) for x in range(n_jobs)]
+
+def config_default(config, var1, var2=None, var3=None, default='LL-PIPELINE'):
+    """
+    If variable not found, adding as default
+    """
+    if var3 is not None:
+        try:
+            _ = config[var1][var2][var3]
+        except KeyError:
+            config[var1][var2][var3] = default
+    elif var2 is not None:
+        try:
+            _ = config[var1][var2]
+        except KeyError:
+            config[var1][var2] = default
+    else:
+        try:
+            _ = config[var1]
+        except KeyError:
+            config[var1] = default
