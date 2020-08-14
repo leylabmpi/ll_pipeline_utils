@@ -11,7 +11,7 @@ from the main (parent) repo.
 
 ```
 cd /path/to/PIPELINE/
-git submodule update --init --recursive
+git submodule update --remote
 ```
 
 # How to add this submodule to an existing pipeline repository
@@ -22,3 +22,8 @@ cd bin/
 git submodule add git@gitlab.tuebingen.mpg.de:leylabmpi/pipelines/ll_pipeline_utils.git
 ```
 
+# How to clone a pipeline repo and include the updated submodule
+
+```
+git clone --recurse-submodules git@URL_OF_THE_PIPELINE_CHANGE_THIS
+```
