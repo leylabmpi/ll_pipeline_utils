@@ -195,10 +195,13 @@ def load_qacct(acct_file, max_lines = 100000):
     for i,line in enumerate(output.decode().split('\n')):
         if i > max_lines:
             break
+        if line.startswith('#') or line.rstrip() == '':
+            continue
         line = line.split(':')
         try:
             # jobID : [exit_status, node, ru_wallclock, ru_utime, cpu, mem, io]
-            qacct_info[line[5]] = [line[12], line[1], line[13], line[14], line[36], line[37], line[38]]
+            qacct_info[line[5]] = [line[12], line[1], line[13], line[14],
+                                   line[36], line[37], line[38]]
         except IndexError:
             qacct_info[line[5]] = ['', '', '', '', '', '', '']
     return qacct_info
