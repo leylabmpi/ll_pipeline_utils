@@ -42,8 +42,8 @@ fatal: Could not read from remote repository.
 ```
 
 ...then you probably need to [add an ssh key to your GitLab account](https://docs.gitlab.com/ee/ssh/).
-Basically, you just need to paste in the public ssh key from your `~/.ssh/id_rsa` file that is in your home directory on `/ebio/`.
-If you do not have a `~/.ssh/id_rsa` file, then you need to create one (see the docs above).
+Basically, you just need to paste in the public ssh key from your `~/.ssh/id_rsa.pub` file that is in your home directory on `/ebio/`.
+If you do not have a `~/.ssh/id_rsa.pub` file, then you need to create one (see the docs above).
 
 NOTE: You may have to re-clone the parent repo (eg., `LLMGQC`) via the ssh url in order to fix the issue.
 
