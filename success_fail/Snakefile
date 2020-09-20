@@ -11,14 +11,14 @@ def file_atch(file_path, file_type):
     """ Attachments for email
     """
     if os.path.isfile(file_path) and os.stat(file_path).st_size > 0:
-       attach = '-a {}'.format(file_path)   
-       file_path = os.path.split(file_path)[1]
-       msg = 'See attached {} file: {}'.format(file_type, file_path)
-   else:
-       attach = ''
-       file_path = os.path.split(file_path)[1]
-       msg = 'WARNING: could not attach {}: {}'.format(file_type, file_path)
-   return attach,msg
+        attach = '-a {}'.format(file_path)   
+        file_path = os.path.split(file_path)[1]
+        msg = 'See attached {} file: {}'.format(file_type, file_path)
+    else:
+        attach = ''
+        file_path = os.path.split(file_path)[1]
+        msg = 'WARNING: could not attach {}: {}'.format(file_type, file_path)
+    return attach,msg
 
 def email_with_atch(email, title, rpt_file, config_json):
     """ Using mutt to send email with attachments
