@@ -60,6 +60,8 @@ def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
     os.remove(config_json)
 
 def mk_cmd(success=True):
+    if not os.path.isdir(config['tmp_dir']):
+        os.makedirs(config['tmp_dir'])
     msg = 'complete' if success is True else 'error'
     print('Pipeline {}! Creating report...'.format(msg))
     exe = os.path.join(config['pipeline']['snakemake_folder'], 'bin',
