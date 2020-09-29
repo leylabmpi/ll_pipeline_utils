@@ -7,6 +7,10 @@ The repo acts as a "submodule" in the git repos of each pipeline.
 Submodules are repos inside other repos that can be updated separately
 from the main (parent) repo.
 
+The repo also includes [snakeamke profiles](https://github.com/Snakemake-Profiles)
+for running snakemake on a cluster (SGE & SLURM currently supported). You do **NOT**
+need to add the profile(s) to your `~/.config/snakemake/` directory! 
+
 # How to update this submodule in an existing pipeline
 
 ```
