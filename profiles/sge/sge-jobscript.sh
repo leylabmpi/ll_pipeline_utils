@@ -1,4 +1,5 @@
 #!/bin/bash
+export OMP_NUM_THREADS=1
 # properties = {properties}
 if [[ -f ~/.bashrc &&  $(grep -c "__conda_setup=" ~/.bashrc) -gt 0 && $(grep -c "unset __conda_setup" ~/.bashrc) -gt 0 ]]; then
    echo "Sourcing .bashrc" 1>&2
