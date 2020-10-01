@@ -43,6 +43,7 @@ def email_no_atch(email, title):
         shell(cmd.format(body=body, exe='mail', title=title, email=email))
        
 def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
+    sys.stderr.write('\33[36m--- Sending email ---\x1b[0m\n')
     # json of config
     config_json = os.path.join(config['tmp_dir'], 'job_config.json')
     write_config(config_json)    
@@ -58,23 +59,39 @@ def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
     # cleanup
     os.remove(rpt_file)
     os.remove(config_json)
+    sys.stderr.write('\33[36m--- Finishing up ---\x1b[0m\n')
 
 def mk_cmd(success=True):
+    # status
     if not os.path.isdir(config['tmp_dir']):
         os.makedirs(config['tmp_dir'])
-    msg = 'complete' if success is True else 'error'
-    print('Pipeline {}! Creating report...'.format(msg))
+    if success is True:
+        sys.stderr.write('\n\33[34mPipeline complete! Creating report... \x1b[0m\n')        
+    else:
+        sys.stderr.write('\n\33[31mPipeline failed! Creating report... \x1b[0m\n')
+    # outfile directory info
+    sys.stderr.write('\33[36m--- I/O info ---\x1b[0m\n')
+    try:
+        get_used('tmp_dir', config['tmp_dir'])
+    except KeyError:
+        pass
+    try:
+        get_used('output_dir', config['output_dir'])
+    except KeyError:
+        pass            
+    # command for summarizing the log
+    sys.stderr.write('\33[36m--- Summarizing job logs ---\x1b[0m\n')
     exe = os.path.join(config['pipeline']['snakemake_folder'], 'bin',
                        'll_pipeline_utils', 'bin', 'log_summarize.py')
     if not os.path.isfile(exe):
-        exe = os.path.join(config['pipeline']['script_folder'], 'log_summarize.py')            
+        exe = os.path.join(config['pipeline']['script_folder'], 'log_summarize.py')
     rpt_file = os.path.join(config['tmp_dir'], 'job_report.csv')
     cmd = '{exe} {{log}} > {rpt_file}'.format(exe=exe, rpt_file=rpt_file)
     return rpt_file, cmd
     
 ## call
 onsuccess:
-    rpt_file,cmd = mk_cmd(success=True)
+    rpt_file,cmd = mk_cmd(success=True)    
     try:
         shell(cmd)
     except subprocess.CalledProcessError:

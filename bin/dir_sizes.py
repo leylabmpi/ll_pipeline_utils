@@ -1,27 +1,29 @@
-# import 
+#!/usr/bin/env python
 from __future__ import print_function
 import os
 import sys
 import re
-import pathlib
+import argparse
+import logging
 import subprocess
 
-#-- utility functions --#
-def gz_is_empty(fname):
-    """ Test if gzip file fname is empty. Return True if the
-    uncompressed data in fname has zero length or if fname
-    itself has zero length. Raises OSError if fname has non-zero
-    length and is not a gzip file
-    """
-    with gzip.open(fname, 'rb') as inF:
-        data = inF.read(1)
-    return len(data) == 0
+desc = 'Getting the size/inode usage of a directory'
+epi = """DESCRIPTION:
+Getting the size and inode usage & limits for a specific directory.
+"""
+parser = argparse.ArgumentParser(description=desc,
+                                 epilog=epi,
+                                 formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument('-d', '--directory', type=str, default='.',
+                    help='Target directory (default: %(default)s)')
+parser.add_argument('--version', action='version', version='0.0.1')
 
-def get_used_size(path):
-    """ returns % used for file size
-    Args: path = directory to check
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
+
+
+def run_cmd(cmd):
+    """ returns % used
     """
-    cmd = 'df {}'.format(os.path.abspath(path))
     try:
         with open(os.devnull, 'w') as DNULL:
             res = subprocess.run(cmd, check=True, shell=True,
@@ -30,7 +32,6 @@ def get_used_size(path):
     except subprocess.CalledProcessError as e:
         return None
     res = res.stdout.decode()
-    perc_used = 0
     for i,line in enumerate(res.split('\n')):
         if i == 1:
             line = re.split(r' +', line)
@@ -40,13 +41,13 @@ def get_used_size(path):
             perc_used = used / total * 100
             if perc_used > 100:
                 perc_used = used / float(line[3]) * 100
-    return perc_used
+            return perc_used
+    return 0
 
-def get_used_inodes(path):
-    """ returns % used inodes
-    Args: path = directory to check
+def get_inodes(path):
+    """ returns % used
     """
-    path = os.path.abspath(path)
+    # determine the basal directory
     parent_dir = [x for x in re.split(r'/', path) if x != '']
     try:
         parent_dir = os.path.join('/' + parent_dir[0], parent_dir[1])
@@ -54,17 +55,19 @@ def get_used_inodes(path):
         parent_dir = os.path.join('/' + parent_dir[0])
     st_p = os.statvfs(parent_dir)    
     st_c = os.statvfs(path)
+    print([st_p.f_ffree,st_c.f_ffree])
     used_inode = st_p.f_ffree - st_c.f_ffree
     total_inode = st_c.f_files
     inode_perc = used_inode / total_inode * 100
     return inode_perc
+        
+def main(args):
+    args.directory = os.path.abspath(args.directory)
+    size = run_cmd('df {}'.format(args.directory))
+    inodes = get_inodes(args.directory)
+    print('% used size: {}'.format(round(size,1)))
+    print('% used inodes: {}'.format(round(inodes,1)))
 
-def get_used(label, path):
-    """ returns % used size/inodes
-    Args: path = directory to check
-    """
-    size = get_used_size(path)
-    inodes = get_used_inodes(path)
-    rpt = '{}: {}\n  % used size: {}\n  % used inodes: {}'
-    rpt = rpt.format(label, path, round(size,1), round(inodes,1))
-    sys.stderr.write('\33[33m{} \x1b[0m\n'.format(rpt))
+if __name__ == '__main__':
+    args = parser.parse_args()
+    main(args)
