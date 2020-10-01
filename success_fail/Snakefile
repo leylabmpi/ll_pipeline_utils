@@ -66,7 +66,7 @@ def mk_cmd(success=True):
     if not os.path.isdir(config['tmp_dir']):
         os.makedirs(config['tmp_dir'])
     if success is True:
-        sys.stderr.write('\n\33[34mPipeline complete! Creating report... \x1b[0m\n')        
+        sys.stderr.write('\n\33[32mPipeline complete! Creating report... \x1b[0m\n')        
     else:
         sys.stderr.write('\n\33[31mPipeline failed! Creating report... \x1b[0m\n')
     # outfile directory info
