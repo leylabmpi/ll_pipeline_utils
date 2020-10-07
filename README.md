@@ -51,3 +51,10 @@ If you do not have a `~/.ssh/id_rsa.pub` file, then you need to create one (see 
 
 NOTE: You may have to re-clone the parent repo (eg., `LLMGQC`) via the ssh url in order to fix the issue.
 
+If you get an error like this:
+
+```
+Error: profile given but no config.yaml found. Profile has to be given as either absolute path, relative path or name of a directory available in either /etc/xdg/snakemake or /ebio/abt3/USERNAME/.config/snakemake.
+```
+
+...then make sure to update the submodule: `git submodule update --init --remote`
