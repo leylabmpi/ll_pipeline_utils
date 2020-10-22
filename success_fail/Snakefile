@@ -43,6 +43,8 @@ def email_no_atch(email, title):
         shell(cmd.format(body=body, exe='mail', title=title, email=email))
        
 def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
+    if email.lower() == 'skip':
+        return None
     sys.stderr.write('\33[36m--- Sending email ---\x1b[0m\n')
     # json of config
     config_json = os.path.join(config['tmp_dir'], 'job_config.json')
