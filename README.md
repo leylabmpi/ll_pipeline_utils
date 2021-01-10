@@ -24,6 +24,7 @@ git submodule update --remote --init --recursive
 cd /path/to/PIPELINE/
 cd bin/
 git submodule add git@gitlab.tuebingen.mpg.de:leylabmpi/pipelines/ll_pipeline_utils.git
+git submodule update --remote --init --recursive
 ```
 
 # How to clone a pipeline repo and include the updated submodule
