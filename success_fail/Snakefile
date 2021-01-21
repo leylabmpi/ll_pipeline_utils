@@ -8,7 +8,8 @@ def write_config(out_file):
         json.dump(config_tmp, outF, indent=4)
 
 def file_atch(file_path, file_type):
-    """ Attachments for email
+    """ 
+    Attachments for email
     """
     if os.path.isfile(file_path) and os.stat(file_path).st_size > 0:
         attach = '-a {}'.format(file_path)   
@@ -21,7 +22,8 @@ def file_atch(file_path, file_type):
     return attach,msg
 
 def email_with_atch(email, title, rpt_file, config_json):
-    """ Using mutt to send email with attachments
+    """ 
+    Using mutt to send email with attachments
     """
     rpt_atch,rpt_msg = file_atch(rpt_file, 'job report')
     cfg_atch,cfg_msg = file_atch(config_json, 'pipeline config')
@@ -32,7 +34,8 @@ def email_with_atch(email, title, rpt_file, config_json):
     shell(cmd)
 
 def email_no_atch(email, title):
-    """ Using mail(x) to send email without attachments
+    """ 
+    Using mail(x) to send email without attachments
     """
     body = 'WARNING: the config & report files could not be attached to the email.'
     body += ' Check that "mutt" is installed and properly working.'
@@ -43,7 +46,7 @@ def email_no_atch(email, title):
         shell(cmd.format(body=body, exe='mail', title=title, email=email))
        
 def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
-    if email.lower() == 'skip':
+    if email.lower().startswith('skip'):
         return None
     sys.stderr.write('\33[36m--- Sending email ---\x1b[0m\n')
     # json of config

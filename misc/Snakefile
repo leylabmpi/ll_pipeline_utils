@@ -73,7 +73,8 @@ def shared_mem():
 
 def which_tmp_dir():
     """
-    Determining which temporary directory to use, depending on the amount of shared memory avaiable
+    Determining which temporary directory to use, 
+    depending on the amount of shared memory avaiable
     """
     if config['pipeline']['use_shared_mem'] is True and shared_mem() > 80:
         tmp_dir = os.path.join('/dev/shm', os.path.split(config['tmp_dir'])[1])

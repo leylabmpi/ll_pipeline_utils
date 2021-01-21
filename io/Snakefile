@@ -63,6 +63,8 @@ def get_used(label, path):
     """ returns % used size/inodes
     Args: path = directory to check
     """
+    if not os.path.isdir(path):
+        return None
     size = get_used_size(path)
     inodes = get_used_inodes(path)
     rpt = '{}: {}\n  % used size: {}\n  % used inodes: {}'

@@ -22,7 +22,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 
 def run_cmd(cmd):
-    """ returns % used
+    """ 
+    returns % used
     """
     try:
         with open(os.devnull, 'w') as DNULL:
@@ -45,7 +46,7 @@ def run_cmd(cmd):
     return 0
 
 def get_inodes(path):
-    """ returns % used
+    """ returns % used for the file path provided
     """
     # determine the basal directory
     parent_dir = [x for x in re.split(r'/', path) if x != '']
@@ -63,10 +64,16 @@ def get_inodes(path):
         
 def main(args):
     args.directory = os.path.abspath(args.directory)
-    size = run_cmd('df {}'.format(args.directory))
-    inodes = get_inodes(args.directory)
-    print('% used size: {}'.format(round(size,1)))
-    print('% used inodes: {}'.format(round(inodes,1)))
+    if os.path.isdir(args.directory):
+        size = round(run_cmd('df {}'.format(args.directory)),1)
+        inodes = round(get_inodes(args.directory),1)
+    else:
+        msg = 'WARNING: Cannot find directory: {}'
+        sys.stderr.write(msg.format(args.directory))
+        size = 'NA'
+        inodes = 'NA'
+    print('% used size: {}'.format(size))
+    print('% used inodes: {}'.format(inodes))
 
 if __name__ == '__main__':
     args = parser.parse_args()

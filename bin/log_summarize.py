@@ -279,6 +279,9 @@ def write_summary(D):
 def main(args):
     """Main interface
     """
+    if not os.path.isfile(args.log_file):
+        logging.warning('No log file found. Exiting')
+        sys.exit(0)
     # create log file data structure
     D = makehash()
     # parsing snakemake log file
