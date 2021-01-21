@@ -32,7 +32,7 @@ git submodule update --remote --init --recursive
 ```
 cd /path/to/PIPELINE/
 cd bin/
-git submodule add git@gitlab.tuebingen.mpg.de:leylabmpi/pipelines/ll_pipeline_utils.git
+git submodule add git@github.com:leylabmpi/ll_pipeline_utils.git
 git submodule update --remote --init --recursive
 ```
 
@@ -50,7 +50,7 @@ If you get the following error:
 
 ```
 Cloning into '/path/to/by/pipeline/bin/ll_pipeline_utils'...
-git@gitlab.tuebingen.mpg.de: Permission denied (publickey).
+... Permission denied (publickey).
 fatal: Could not read from remote repository.
 ```
 
