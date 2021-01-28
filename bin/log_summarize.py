@@ -142,11 +142,19 @@ def parse_section(inF, D, time_stamp):
         time_stamp = parse_rule(inF, D,
                                 rule_name=rule_name,
                                 time_stamp=time_stamp)
-        parse_section(inF, D, time_stamp)
+        try:
+            parse_section(inF, D, time_stamp)
+        except RecursionError:
+            logging.warning('Recursion error hit!')
+            pass
     elif regex_error_in.search(line):
         time_stamp = parse_error(inF, D, rule_name=line,
                                  time_stamp=time_stamp)
-        parse_section(inF, D, time_stamp)
+        try:
+            parse_section(inF, D, time_stamp)
+        except RecursionError:
+            logging.warning('Recursion error hit!')
+            pass
     elif regex_finished.search(line):
         sm_job = regex_finished.search(line).group(1)
         rule_name,input_files,attempt_cnt = find_sm_job(D, sm_job)
