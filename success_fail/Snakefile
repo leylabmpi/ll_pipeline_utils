@@ -46,7 +46,8 @@ def email_no_atch(email, title):
         shell(cmd.format(body=body, exe='mail', title=title, email=email))
        
 def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
-    if email.lower().startswith('skip'):
+    if email.lower() == 'skip' or email.lower() == 'none' or email is None:
+        sys.stderr.write('\33[35m--- No email provided; not sending a notification ---\x1b[0m\n')
         return None
     sys.stderr.write('\33[36m--- Sending email ---\x1b[0m\n')
     # json of config
