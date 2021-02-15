@@ -63,7 +63,7 @@ def qacct_check(jobid):
 jobid = sys.argv[1]
 regex = re.compile(r' +')
 try:
-    for i in range(3):
+    for i in range(10):
         # checking qstat
         qstat_check(jobid, regex)
         # if not listed via qstat, parsing sge accounting info
@@ -71,7 +71,7 @@ try:
         # if not listed at the end of the acct file, trying qacct
         qacct_check(jobid)
         # waiting
-        time.sleep(10)
+        time.sleep(5)
     print('failed')
 except KeyboardInterrupt:
     print('failed')
