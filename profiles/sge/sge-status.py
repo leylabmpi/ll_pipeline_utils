@@ -10,6 +10,8 @@ from subprocess import Popen, PIPE, DEVNULL
 def qstat_check(jobid, regex):
     p = Popen(['qstat'], stdout=PIPE)
     output, err = p.communicate()
+    if p.returncode != 0:
+        return 0
     for x in output.decode().split('\n'):
         y = re.split(regex, x)
         if y[0] == jobid:
@@ -29,6 +31,8 @@ def acct_check(jobid, max_lines):
     cmd += " '{if ($6 == id) {print $0; exit 0}}'"
     p = Popen([cmd], stdout=PIPE, shell=True)
     output, err = p.communicate()
+    if p.returncode != 0:
+        return 0
     for i,x in enumerate(output.decode().split('\n')):
         if i > max_lines:
             p.stdout.close()
@@ -44,12 +48,13 @@ def acct_check(jobid, max_lines):
             p.stdout.close()
             exit(0)
 
-
 def qacct_check(jobid):
     regex = re.compile(r' +')
     cmd = 'qacct -j {jobid}'.format(jobid=jobid)
     p = Popen([cmd], stdout=PIPE, shell=True, stderr=DEVNULL)
     output, err = p.communicate()
+    if p.returncode != 0:
+        return 0
     for x in output.decode().split('\n'):
         x = regex.split(x)
         if x[0] == 'exit_status':
@@ -73,7 +78,12 @@ try:
         # waiting
         time.sleep(5)
     print('failed')
+    exit(0)
 except KeyboardInterrupt:
-    print('failed')
-
+    print('failed')    
+    exit(0)
+except (OSError, ValueError, AssertionError, IndexError) as e:
+    pass
+# last resort
+print('running')
 
