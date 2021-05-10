@@ -102,7 +102,11 @@ onsuccess:
         shell(cmd)
     except subprocess.CalledProcessError:
         print('WARNING: could not parse snakemake log file')
-    send_email(rpt_file, config['pipeline']['email'], config,
+    try:
+        email = config['pipeline']['email']
+    except KeyError:
+        email = config['email']
+    send_email(rpt_file, email, config,
                pipeline=config['pipeline']['name'], success=True)
 
 onerror:
@@ -111,6 +115,10 @@ onerror:
         shell(cmd)
     except subprocess.CalledProcessError:
         print('WARNING: could not parse snakemake log file')
-    send_email(rpt_file, config['pipeline']['email'], config,
+    try:
+        email = config['pipeline']['email']
+    except KeyError:
+        email = config['email']
+    send_email(rpt_file, email, config,
                pipeline=config['pipeline']['name'], success=False)
  
