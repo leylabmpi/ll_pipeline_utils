@@ -102,6 +102,7 @@ onsuccess:
         shell(cmd)
     except subprocess.CalledProcessError:
         print('WARNING: could not parse snakemake log file')
+    export_conda_envs(config)
     try:
         email = config['pipeline']['email']
     except KeyError:
