@@ -6,6 +6,12 @@ import pathlib
 from distutils.spawn import find_executable
 
 #-- util functions --#
+def is_true(x):
+    """
+    Convert to lowercase string and check if "true"
+    """
+    return str(x).lower() == 'true'
+
 def skipped(x):
     """
     Does string start with "skip"?
