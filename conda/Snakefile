@@ -1,0 +1,53 @@
+# import 
+from __future__ import print_function
+import os
+import sys
+import shutil
+import glob
+
+def export_conda_envs(config):
+    """
+    Export conda env yaml files
+    """
+    # export==True? 
+    try:
+        if not is_true(config['pipeline']['export_conda']):
+            return None
+    except KeyError:
+        return None
+    sys.stderr.write('\33[36m--- Exporting conda envs ---\x1b[0m\n')
+    # base dir
+    try:
+        d = config['pipeline']['snakemake_folder']
+    except KeyError:
+        msg = '\33[33m WARNING: Could not find "snakemake_folder" in config \x1b[0m\n'
+        sys.stderr.write(msg)
+        return None
+    # output dir
+    try:
+        outd = config['output_dir']
+    except KeyError:
+        msg = '\33[33m WARNING: Could not find "output_dir" in config \x1b[0m\n'
+        sys.stderr.write(msg)
+        return None
+    outd = os.path.join(outd, 'conda_envs')
+    if not os.path.isdir(outd):
+        os.makedirs(outd)
+    # conda env dir
+    d = os.path.join(d, '.snakemake', 'conda')
+    if not os.path.isdir(d):
+        msg = '\33[33m WARNING: Could not find: {} \x1b[0m\n'
+        sys.stderr.write(msg.format(d))
+        msg = '\33[33m   conda env yaml files will not be exported \x1b[0m\n'
+        sys.stderr.write(msg)
+        return None
+    # conda envs
+    for F in glob.glob(os.path.join(d, '*.yaml')):
+        outf = os.path.join(outd, os.path.split(F)[1])
+        if os.path.isfile(outf):
+            os.unlink(outf)
+        shutil.copy(F, outf)
+    msg = '\33[33m Conda env yaml files written to: {} \x1b[0m\n'
+    sys.stderr.write(msg.format(outd))
+    return None
+        
