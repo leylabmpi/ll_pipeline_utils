@@ -61,7 +61,8 @@ def send_email(rpt_file, email, config, pipeline='LL_pipeline', success=True):
         email_with_atch(email, title, rpt_file, config_json)
     except subprocess.CalledProcessError:
         ## without attachments
-        email_no_atch(email, title)    
+        email_no_atch(email, title)
+    sys.stderr.write('\33[33m Email sent to: {}\x1b[0m\n'.format(email))
     # cleanup
     os.remove(rpt_file)
     os.remove(config_json)
