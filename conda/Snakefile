@@ -4,6 +4,7 @@ import os
 import sys
 import shutil
 import glob
+from subprocess import Popen, PIPE
 
 def export_conda_envs(config):
     """
@@ -43,10 +44,21 @@ def export_conda_envs(config):
         return None
     # conda envs
     for F in glob.glob(os.path.join(d, '*.yaml')):
-        outf = os.path.join(outd, os.path.split(F)[1])
-        if os.path.isfile(outf):
-            os.unlink(outf)
-        shutil.copy(F, outf)
+        conda_path = os.path.splitext(F)[0]
+        if os.path.isdir(conda_path):
+            cmd = ['conda', 'env', 'export', '-p', conda_path]
+            p = Popen(cmd, stdout=PIPE)
+            output, err = p.communicate()
+            rc = p.returncode
+            if rc != 0:
+                msg = '\33[33m  could not export env: {}\x1b[0m\n'
+                sys.stderr.write(msg.format(conda_path))
+                continue
+            # writing env
+            outfile = os.path.join(outd, os.path.split(F)[1])
+            with open(outfile, 'w') as outF:
+                for line in output.decode().split('\n'):
+                    outF.write(line + '\n')
     msg = '\33[33m Conda env yaml files written to: {} \x1b[0m\n'
     sys.stderr.write(msg.format(outd))
     return None
