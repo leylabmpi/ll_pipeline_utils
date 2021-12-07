@@ -3,6 +3,6 @@ jobscript: "sge-jobscript.sh"
 cluster: "sge-submit.py"
 cluster-status: "sge-status.py"
 max-jobs-per-second: 2
-max-status-checks-per-second: 2
+max-status-checks-per-second: 1
 latency-wait: 120
 
