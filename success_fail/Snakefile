@@ -38,7 +38,7 @@ def email_no_atch(email, title):
     Using mail(x) to send email without attachments
     """
     body = 'WARNING: the config & report files could not be attached to the email.'
-    body += ' Check that "mutt" is installed and properly working.'
+    body += ' Either the report files are too large or "mutt" is not installed and properly.'
     cmd = "echo '{body}' | {exe} -s '{title}' {email}"
     try:
         shell(cmd.format(body=body, exe='mailx', title=title, email=email))
