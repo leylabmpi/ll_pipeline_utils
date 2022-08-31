@@ -44,12 +44,13 @@ git clone --recurse-submodules git@URL_OF_THE_PIPELINE_CHANGE_THIS
 
 ## How to remove this submodule
 
-```
 From [this gist](https://gist.github.com/myusuf3/7f645819ded92bda6677)
-PATH_TO_SUBMODULE=path/to/the/submodul/
+
+```
+PATH_TO_SUBMODULE=./bin/ll_pipeline_utils/
 git submodule deinit -f $PATH_TO_SUBMODULE
 git rm $PATH_TO_SUBMODULE
-git commit -m "Removed submodule"
+git commit -m "Removed ll_pipeline_utils submodule"
 rm -rf .git/modules/$PATH_TO_SUBMODULE
 ```
 
