@@ -1,12 +1,7 @@
 #!/bin/bash
 export OMP_NUM_THREADS=1
 # properties = {properties}
-if [[ -f ~/.bashrc &&  $(grep -c "__conda_setup=" ~/.bashrc) -gt 0 && $(grep -c "unset __conda_setup" ~/.bashrc) -gt 0 ]]; then
-   echo "Sourcing .bashrc" 1>&2
-   . ~/.bashrc
-else
-   echo "Exporting conda PATH" 1>&2
-   export PATH=/ebio/abt3_projects/software/dev/miniconda3_dev/bin:$PATH
-fi
 
+# exit on first error
+set -o errexit
 {exec_job}
