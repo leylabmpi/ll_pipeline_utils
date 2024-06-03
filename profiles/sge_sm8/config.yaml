@@ -1,0 +1,9 @@
+restart-times: 3
+jobscript: "sge-jobscript.sh"
+cluster-generic-submit-cmd: "sge-submit.py"
+#cluster-generic-status-cmd: "sge-status.py"
+cluster-generic-cancel-cmd: "sge-cancel.py"
+max-jobs-per-second: 1
+max-status-checks-per-second: 1
+latency-wait: 90
+
