@@ -6,8 +6,9 @@ Boilerplate code used by all/most of the Ley Lab snakemake pipelines
 * Version: 0.1.0
 * Authors:
   * Nick Youngblut <nyoungb2@gmail.com>
+  * Alexander Tyakht <alexander.tyakht@tuebingen.mpg.de>
 * Maintainers:
-  * Nick Youngblut <nyoungb2@gmail.com>
+  * Alexander Tyakht <alexander.tyakht@tuebingen.mpg.de>
 
 The repo acts as a "submodule" in the git repos of each pipeline.
 Submodules are repos inside other repos that can be updated separately
