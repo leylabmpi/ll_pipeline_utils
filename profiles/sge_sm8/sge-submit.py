@@ -99,7 +99,7 @@ except subprocess.CalledProcessError as e:
 # get qsub job ID
 res = res.stdout.decode()
 try:
-    m = re.search("Your job (\d+)", res)
+    m = re.search(r"Your job (\d+)", res)
     jobid = m.group(1)
     print(jobid)
 except Exception as e:
